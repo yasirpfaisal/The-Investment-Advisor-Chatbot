@@ -26,7 +26,7 @@ You can interact with the live, deployed bot on Telegram:
 Interacting with the bot is simple. Here are the main commands:
 
 1.  **Start the Conversation:**
-    * Find the bot on Telegram (e.g., search for its username like `@InvestoPhilBot`).
+    * Click the link to open telegram or scan the QR code.
     * Press the **"Start"** button or type and send the command:
         ```
         /start
