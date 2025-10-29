@@ -21,7 +21,38 @@ You can interact with the live, deployed bot on Telegram:
 
 ![1](https://github.com/user-attachments/assets/c9ed0cb5-515d-4d28-90d5-34ca3189c479)
 
+## 🤖 How to Use the Investment Philosopher Bot
 
+Interacting with the bot is simple. Here are the main commands:
+
+1.  **Start the Conversation:**
+    * Find the bot on Telegram (e.g., search for its username like `@InvestoPhilBot`).
+    * Press the **"Start"** button or type and send the command:
+        ```
+        /start
+        ```
+    * The bot will reply with a welcome message explaining its purpose.
+
+    ---
+
+2.  **Ask an Investment Question:**
+    * To ask a question, use the `/ask` command followed by your question.
+    * **Format:** `/ask [Your question here]`
+    * **Example:**
+        ```
+        /ask What is your opinion on diversification?
+        ```
+        ```
+        /ask How do Buffett and Dalio view market timing?
+        ```
+    * **Important:** You *must* include `/ask` before your question. If you just send the question text, the bot will remind you to use the command.
+
+    ---
+
+3.  **Wait for the Response:**
+    * After you send an `/ask` command, the bot will reply with "Thinking...".
+    * It takes a moment (usually 10-30 seconds) for the bot to retrieve information from its knowledge base (Buffett's letters & Dalio's principles) and for the AI to synthesize the 3-part answer.
+    * The bot will then send the complete response, presenting Warren Buffett's view, Ray Dalio's view, and a final synthesized analysis.
 
 ---
 
