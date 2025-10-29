@@ -1,8 +1,8 @@
-# investment-philosopher-telegram-bot
+
 
 # 🏛️ Investment Philosopher Bot (Buffett & Dalio)
 
-**Candidate:** Yasir Pulikkal
+ Yasir Pulikkal
 **Task:** AI Innovation Intern - Test Task 3: Investment Advisor Chatbot
 
 This is my (optional) third submission for the Snoonu AI Innovation Intern task.
@@ -17,7 +17,42 @@ This is a **Retrieval-Augmented Generation (RAG) system** that treats the two in
 
 You can interact with the live, deployed bot on Telegram:
 
-**Telegram Bot URL:** **[Link to your t.me/YourBotName]**
+**Telegram Bot URL**:**[t.me/@Invest_Phil_Bot](https://t.me/Invest_Phil_Bot)**
+
+![1](https://github.com/user-attachments/assets/c9ed0cb5-515d-4d28-90d5-34ca3189c479)
+
+## 🤖 How to Use the Investment Philosopher Bot
+
+Interacting with the bot is simple. Here are the main commands:
+
+1.  **Start the Conversation:**
+    * Click the link to open telegram or scan the QR code.
+    * Press the **"Start"** button or type and send the command:
+        ```
+        /start
+        ```
+    * The bot will reply with a welcome message explaining its purpose.
+
+    ---
+
+2.  **Ask an Investment Question:**
+    * To ask a question, use the `/ask` command followed by your question.
+    * **Format:** `/ask [Your question here]`
+    * **Example:**
+        ```
+        /ask What is your opinion on diversification?
+        ```
+        ```
+        /ask How do Buffett and Dalio view market timing?
+        ```
+    * **Important:** You *must* include `/ask` before your question. If you just send the question text, the bot will remind you to use the command.
+
+    ---
+
+3.  **Wait for the Response:**
+    * After you send an `/ask` command, the bot will reply with "Thinking...".
+    * It takes a moment (usually 10-30 seconds) for the bot to retrieve information from its knowledge base (Buffett's letters & Dalio's principles) and for the AI to synthesize the 3-part answer.
+    * The bot will then send the complete response, presenting Warren Buffett's view, Ray Dalio's view, and a final synthesized analysis.
 
 ---
 
@@ -43,29 +78,9 @@ This provides a nuanced, accurate, and truly innovative answer, fulfilling the s
 * **Vector Store:** ChromaDB (In-memory, persistent as long as the worker is running)
 * **Deployment:** **Render** (as a "Background Worker")
 
----
+--
 
-### 3. ⚠️ CRITICAL: How to Set Up the Bot
-
-#### Part 1: Get Your Telegram Bot Token
-
-1.  Open the Telegram app and search for the **`@BotFather`** (it's the official bot with a checkmark).
-2.  Send the command `/newbot`.
-3.  Follow the instructions to name your bot (e.g., "Investment Philosopher") and choose a username (e.g., `InvestoPhilBot`).
-4.  BotFather will give you a **token**. This is your `TELEGRAM_BOT_TOKEN`.
-
-#### Part 2: Knowledge Base Setup
-
-The `data/` directory is where the bot's "knowledge" lives. For the app to work, you **must** find and add high-quality PDF files to these two folders:
-
-* **`data/buffett/`**: Add Warren Buffett's Shareholder Letters.
-* **`data/dalio/`**: Add Ray Dalio's "Principles".
-
-The application will *not* run without these files.
-
----
-
-### 4. How to Run Locally
+### 3. How to Run Locally
 
 **Prerequisites:**
 * You have a `TELEGRAM_BOT_TOKEN`.
@@ -76,7 +91,11 @@ The application will *not* run without these files.
 ```bash
 git clone [https://github.com/](https://github.com/)[yasirpfaisal]/investment-philosopher-telegram-bot.git
 cd investment-philosopher-telegram-bot
+```
+```bash
 python -m venv venv
-# On macOS/Linux: source venv/bin/activate
-# On Windows: .\venv\Scripts\activate
+```
+```bash 
+.\venv\Scripts\activate
 pip install -r requirements.txt
+ ```
