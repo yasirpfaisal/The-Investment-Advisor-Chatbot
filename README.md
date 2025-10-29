@@ -17,8 +17,9 @@ This is a **Retrieval-Augmented Generation (RAG) system** that treats the two in
 
 You can interact with the live, deployed bot on Telegram:
 
-**Telegram Bot URL**:**t.me/@Invest_Phil_Bot**
-![WhatsApp Image 2025-10-30 at 01 08 59_2afb401b](https://github.com/user-attachments/assets/8bbdd879-8dc2-4f0c-b384-779442d75372)
+**Telegram Bot URL**:**[t.me/@Invest_Phil_Bot](https://t.me/Invest_Phil_Bot)**
+![1](https://github.com/user-attachments/assets/c9ed0cb5-515d-4d28-90d5-34ca3189c479)
+
 
 
 ---
