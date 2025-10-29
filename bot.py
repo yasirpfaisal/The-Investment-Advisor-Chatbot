@@ -4,6 +4,9 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from src.config import OPENAI_API_KEY, TELEGRAM_BOT_TOKEN
 from src.rag_chain import create_rag_chain
+import threading # <-- Added for threading
+import http.server # <-- Added for the dummy web server
+import socketserver # <-- Added for the dummy web server
 
 # --- 1. App Setup & Validation ---
 print("Bot application starting...")
@@ -24,15 +27,7 @@ if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN is not set.")
 
 # Check for Knowledge Base Data
-#if not os.path.exists("data/buffett") or not os.listdir("data/buffett"):
-#    logger.warning("`data/buffett` directory is empty. Bot will have no knowledge of Warren Buffett.")
-#if not os.path.exists("data/dalio") or not os.listdir("data/dalio"):
-#    logger.warning("`data/dalio` directory is empty. Bot will have no knowledge of Ray Dalio.")
-#if not (os.path.exists("data/buffett") and os.listdir("data/buffett") and os.path.exists("data/dalio") and os.listdir("data/dalio")):
-#   raise FileNotFoundError(
-#        "CRITICAL: The 'data/buffett' or 'data/dalio' folders are empty. "
-#       "You MUST add PDF files to these folders for the RAG bot to work."
- #   )
+# (Assuming you removed the os.listdir check as discussed before)
 
 # --- 2. Build the RAG Chain (This happens once on startup) ---
 logger.info("Building RAG chain... This may take a few minutes as knowledge is loaded.")
@@ -58,35 +53,27 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def ask_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles the /ask command and processes the question."""
-    
-    # Check if there is text after the /ask command
     if not context.args:
-        await update.message.reply_text("Please provide a question after the /ask command. \n\nExample: `/ask What is market timing?`", parse_mode='MarkdownV2')
+        await update.message.reply_text("Please provide a question after the /ask command. \n\nExample: /ask What is market timing?", parse_mode=None)
         return
 
     question = ' '.join(context.args)
     logger.info(f"Received question from {update.effective_user.username}: {question}")
-    
-    # Send a "thinking..." message
     await update.message.reply_text("Thinking... Retrieving and synthesizing a response. This may take a moment.")
-    
+
     try:
-        # --- Run the RAG Chain ---
-        # This is where the magic happens. We call the exact same chain.
         response = rag_chain.invoke(
             {"question": question},
             config={"configurable": {"session_id": str(update.effective_user.id)}}
         )
-        
-        # Telegram has a 4096 character limit.
-        # We'll split the message if it's too long.
+
         if len(response) > 4096:
             logger.warning("Response is too long, splitting into multiple messages.")
             for i in range(0, len(response), 4096):
                 await update.message.reply_text(response[i:i + 4096], parse_mode=None)
         else:
             await update.message.reply_text(response, parse_mode=None)
-            
+
     except Exception as e:
         logger.error(f"Error during chain invocation for user {update.effective_user.username}: {e}")
         await update.message.reply_text(f"An error occurred while processing your request: {e}")
@@ -96,23 +83,35 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info(f"Received non-command message from {update.effective_user.username}")
     await update.message.reply_text(
         "I only respond to the /ask command.\n\n"
-        "Please format your question as: `/ask [your question here]`",
-        parse_mode='none'
+        "Please format your question as: /ask [your question here]",
+        parse_mode=None
     )
 
-# --- 4. Main Function to Run the Bot ---
+# --- 4. Define Dummy Web Server ---
+def run_dummy_server():
+    """Runs a simple HTTP server on the port Render expects."""
+    PORT = int(os.getenv("PORT", 10000)) # Render sets the PORT env var
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        logger.info(f"Dummy HTTP server listening on port {PORT}")
+        httpd.serve_forever()
+
+# --- 5. Main Function to Run Bot and Server ---
 def main():
-    """Starts the bot and polls for messages."""
-    
+    """Starts the dummy server and the Telegram bot."""
+
+    # Start the dummy web server in a separate thread
+    server_thread = threading.Thread(target=run_dummy_server)
+    server_thread.daemon = True # Allows the main program to exit even if this thread is running
+    server_thread.start()
+
     logger.info("Setting up Telegram application...")
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
-    # Add handlers
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("ask", ask_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    
-    # Start polling
+
     logger.info("Bot is polling for messages...")
     application.run_polling()
 

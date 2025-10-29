@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 # Load environment variables from a .env file
 load_dotenv()
 
-# Get the OpenAI API key
+#OpenAI API key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Get the Telegram Bot Token
+#Telegram Bot Token
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 # --- Validation ---
