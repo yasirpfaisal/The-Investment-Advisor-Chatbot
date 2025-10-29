@@ -4,14 +4,13 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from src.config import OPENAI_API_KEY, TELEGRAM_BOT_TOKEN
 from src.rag_chain import create_rag_chain
-import threading # <-- Added for threading
-import http.server # <-- Added for the dummy web server
-import socketserver # <-- Added for the dummy web server
+import threading # Added for threading
+import http.server # Added for the dummy web server
+import socketserver # Added for the dummy web server
+import time # Added for sleep
 
 # --- 1. App Setup & Validation ---
 print("Bot application starting...")
-
-# Configure logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -26,10 +25,24 @@ if not TELEGRAM_BOT_TOKEN:
     logger.error("FATAL: TELEGRAM_BOT_TOKEN not found.")
     raise ValueError("TELEGRAM_BOT_TOKEN is not set.")
 
-# Check for Knowledge Base Data
-# (Assuming you removed the os.listdir check as discussed before)
+# --- Start Dummy Server Immediately ---
+def run_dummy_server():
+    """Runs a simple HTTP server on the port Render expects."""
+    PORT = int(os.getenv("PORT", 10000)) # Render sets the PORT env var
+    Handler = http.server.SimpleHTTPRequestHandler
+    # Use 0.0.0.0 to bind to all available interfaces
+    with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
+        logger.info(f"Dummy HTTP server starting on port {PORT}")
+        httpd.serve_forever()
 
-# --- 2. Build the RAG Chain (This happens once on startup) ---
+logger.info("Starting dummy HTTP server in a background thread...")
+server_thread = threading.Thread(target=run_dummy_server)
+server_thread.daemon = True # Allows the main program to exit even if this thread is running
+server_thread.start()
+time.sleep(2) # Give the server a couple of seconds to start and bind the port
+# --- END NEW SECTION ---
+
+# --- 2. Build the RAG Chain (Now happens *after* server starts) ---
 logger.info("Building RAG chain... This may take a few minutes as knowledge is loaded.")
 try:
     rag_chain = create_rag_chain()
@@ -54,6 +67,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def ask_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles the /ask command and processes the question."""
     if not context.args:
+        # Fixed parse_mode issue here as well
         await update.message.reply_text("Please provide a question after the /ask command. \n\nExample: /ask What is market timing?", parse_mode=None)
         return
 
@@ -67,10 +81,12 @@ async def ask_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             config={"configurable": {"session_id": str(update.effective_user.id)}}
         )
 
+        # Fixed parse_mode issue for long messages
         if len(response) > 4096:
             logger.warning("Response is too long, splitting into multiple messages.")
             for i in range(0, len(response), 4096):
                 await update.message.reply_text(response[i:i + 4096], parse_mode=None)
+        # Fixed parse_mode issue for regular messages
         else:
             await update.message.reply_text(response, parse_mode=None)
 
@@ -81,30 +97,17 @@ async def ask_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles any non-command message."""
     logger.info(f"Received non-command message from {update.effective_user.username}")
+    # Fixed parse_mode issue here
     await update.message.reply_text(
         "I only respond to the /ask command.\n\n"
         "Please format your question as: /ask [your question here]",
         parse_mode=None
     )
 
-# --- 4. Define Dummy Web Server ---
-def run_dummy_server():
-    """Runs a simple HTTP server on the port Render expects."""
-    PORT = int(os.getenv("PORT", 10000)) # Render sets the PORT env var
-    Handler = http.server.SimpleHTTPRequestHandler
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        logger.info(f"Dummy HTTP server listening on port {PORT}")
-        httpd.serve_forever()
-
-# --- 5. Main Function to Run Bot and Server ---
+# --- 4. Main Function to Run the Bot ---
 def main():
-    """Starts the dummy server and the Telegram bot."""
-
-    # Start the dummy web server in a separate thread
-    server_thread = threading.Thread(target=run_dummy_server)
-    server_thread.daemon = True # Allows the main program to exit even if this thread is running
-    server_thread.start()
-
+    """Starts the Telegram bot polling."""
+    # The server is already started in the main scope
     logger.info("Setting up Telegram application...")
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
