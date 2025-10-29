@@ -60,8 +60,6 @@ cd investment-philosopher-telegram-bot
 ```bash
 python -m venv venv
 ```
-
-# On Windows:
 ```bash 
 .\venv\Scripts\activate
 pip install -r requirements.txt
