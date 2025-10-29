@@ -1,8 +1,8 @@
-# investment-philosopher-telegram-bot
+
 
 # 🏛️ Investment Philosopher Bot (Buffett & Dalio)
 
-**Candidate:** Yasir Pulikkal
+ Yasir Pulikkal
 **Task:** AI Innovation Intern - Test Task 3: Investment Advisor Chatbot
 
 This is my (optional) third submission for the Snoonu AI Innovation Intern task.
