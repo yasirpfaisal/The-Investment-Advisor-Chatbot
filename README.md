@@ -43,29 +43,9 @@ This provides a nuanced, accurate, and truly innovative answer, fulfilling the s
 * **Vector Store:** ChromaDB (In-memory, persistent as long as the worker is running)
 * **Deployment:** **Render** (as a "Background Worker")
 
----
+--
 
-### 3. ⚠️ CRITICAL: How to Set Up the Bot
-
-#### Part 1: Get Your Telegram Bot Token
-
-1.  Open the Telegram app and search for the **`@BotFather`** (it's the official bot with a checkmark).
-2.  Send the command `/newbot`.
-3.  Follow the instructions to name your bot (e.g., "Investment Philosopher") and choose a username (e.g., `InvestoPhilBot`).
-4.  BotFather will give you a **token**. This is your `TELEGRAM_BOT_TOKEN`.
-
-#### Part 2: Knowledge Base Setup
-
-The `data/` directory is where the bot's "knowledge" lives. For the app to work, you **must** find and add high-quality PDF files to these two folders:
-
-* **`data/buffett/`**: Add Warren Buffett's Shareholder Letters.
-* **`data/dalio/`**: Add Ray Dalio's "Principles".
-
-The application will *not* run without these files.
-
----
-
-### 4. How to Run Locally
+### 3. How to Run Locally
 
 **Prerequisites:**
 * You have a `TELEGRAM_BOT_TOKEN`.
@@ -76,7 +56,13 @@ The application will *not* run without these files.
 ```bash
 git clone [https://github.com/](https://github.com/)[yasirpfaisal]/investment-philosopher-telegram-bot.git
 cd investment-philosopher-telegram-bot
+```
+```bash
 python -m venv venv
-# On macOS/Linux: source venv/bin/activate
-# On Windows: .\venv\Scripts\activate
+```
+
+# On Windows:
+```bash 
+.\venv\Scripts\activate
 pip install -r requirements.txt
+ ```
