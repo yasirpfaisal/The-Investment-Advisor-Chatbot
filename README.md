@@ -1,6 +1,6 @@
 
 
-# 🏛️ Investment Philosopher Bot (Buffett & Dalio)
+# 🏛️ Investment Advisor ChatBot (Buffett & Dalio)
 
  Yasir Pulikkal
 **Task:** AI Innovation Intern - Test Task 3: Investment Advisor Chatbot
