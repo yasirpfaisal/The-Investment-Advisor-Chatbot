@@ -21,6 +21,9 @@ You can interact with the live, deployed bot on Telegram:
 
 ![1](https://github.com/user-attachments/assets/c9ed0cb5-515d-4d28-90d5-34ca3189c479)
 
+🎬 Quick Video Walkthrough
+
+https://www.loom.com/share/fdd98ae14ce74fbbb37938a67065d2d9
 ## 🤖 How to Use the Investment Philosopher Bot
 
 Interacting with the bot is simple. Here are the main commands:
