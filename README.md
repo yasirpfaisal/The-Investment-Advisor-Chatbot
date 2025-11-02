@@ -1,6 +1,6 @@
 
 
-# 🏛️ Investment Philosopher Bot (Buffett & Dalio)
+# 🏛️ Investment Advisor ChatBot (Buffett & Dalio)
 
  Yasir Pulikkal
 **Task:** AI Innovation Intern - Test Task 3: Investment Advisor Chatbot
@@ -17,10 +17,13 @@ This is a **Retrieval-Augmented Generation (RAG) system** that treats the two in
 
 You can interact with the live, deployed bot on Telegram:
 
-**Telegram Bot URL**:**[t.me/@Invest_Phil_Bot](https://t.me/Invest_Phil_Bot)**
+**Telegram Bot URL**: **[t.me/Invest_Phil_Bot](https://t.me/Invest_Phil_Bot)**
 
 ![1](https://github.com/user-attachments/assets/c9ed0cb5-515d-4d28-90d5-34ca3189c479)
 
+🎬 Quick Video Walkthrough
+
+https://www.loom.com/share/fdd98ae14ce74fbbb37938a67065d2d9
 ## 🤖 How to Use the Investment Philosopher Bot
 
 Interacting with the bot is simple. Here are the main commands:
